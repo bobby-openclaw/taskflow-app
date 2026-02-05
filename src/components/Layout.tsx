@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { Moon, Sun, LayoutDashboard, Settings as SettingsIcon, Menu } from 'lucide-react';
+import { LayoutDashboard, Settings as SettingsIcon, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -9,9 +9,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useThemeContext } from '@/context';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
   return (
     <>
       <NavLink 
@@ -45,9 +45,9 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
       </NavLink>
     </>
   );
-}
+};
 
-function MobileSidebar() {
+const MobileSidebar = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -68,11 +68,9 @@ function MobileSidebar() {
       </SheetContent>
     </Sheet>
   );
-}
+};
 
-function Header() {
-  const { theme, toggleTheme } = useThemeContext();
-
+const Header = () => {
   return (
     <header className="flex items-center gap-4 sm:gap-8 px-4 sm:px-6 py-4 border-b bg-card">
       <MobileSidebar />
@@ -81,19 +79,12 @@ function Header() {
         <NavLinks />
       </nav>
       <div className="flex-1 sm:flex-none" />
-      <Button 
-        variant="ghost" 
-        size="icon"
-        onClick={toggleTheme}
-        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      >
-        {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-      </Button>
+      <ThemeSwitcher />
     </header>
   );
-}
+};
 
-export function Layout() {
+export const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -102,4 +93,4 @@ export function Layout() {
       </main>
     </div>
   );
-}
+};

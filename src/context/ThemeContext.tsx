@@ -1,8 +1,10 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useTheme, type Theme } from '@/hooks';
+import type { ThemeName } from '@/config/themes';
 
 interface ThemeContextValue {
   theme: Theme;
+  setTheme: (name: ThemeName) => void;
   toggleTheme: () => void;
 }
 
@@ -12,7 +14,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps) {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const themeState = useTheme();
 
   return (
@@ -20,7 +22,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </ThemeContext.Provider>
   );
-}
+};
 
 export function useThemeContext() {
   const context = useContext(ThemeContext);

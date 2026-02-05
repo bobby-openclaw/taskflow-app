@@ -7,3 +7,4 @@ export { TaskList } from './TaskList';
 export { TaskTable } from './TaskTable';
 export { TaskDialog } from './TaskDialog';
 export { TaskCardSkeleton, TaskListSkeleton, TaskTableSkeleton } from './TaskSkeleton';
+export { ThemeSwitcher } from './ThemeSwitcher';
