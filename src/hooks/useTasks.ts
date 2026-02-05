@@ -1,12 +1,27 @@
 import { useReducer, useEffect } from 'react';
-import type { Task } from '@/types/task';
+import type { Task, Priority } from '@/types/task';
 import { useLocalStorage } from './useLocalStorage';
 
+interface AddTaskPayload {
+  title: string;
+  priority?: Priority;
+  dueDate?: Date;
+  category?: string;
+}
+
+interface UpdateTaskPayload {
+  id: string;
+  title?: string;
+  priority?: Priority;
+  dueDate?: Date | null;
+  category?: string;
+}
+
 type TaskAction =
-  | { type: 'ADD_TASK'; payload: string }
+  | { type: 'ADD_TASK'; payload: AddTaskPayload }
   | { type: 'TOGGLE_TASK'; payload: string }
   | { type: 'DELETE_TASK'; payload: string }
-  | { type: 'UPDATE_TASK'; payload: { id: string; title: string } }
+  | { type: 'UPDATE_TASK'; payload: UpdateTaskPayload }
   | { type: 'SET_TASKS'; payload: Task[] };
 
 interface TaskState {
@@ -22,9 +37,12 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
           ...state.tasks,
           {
             id: crypto.randomUUID(),
-            title: action.payload,
+            title: action.payload.title,
             completed: false,
             createdAt: new Date(),
+            priority: action.payload.priority ?? 'medium',
+            dueDate: action.payload.dueDate,
+            category: action.payload.category,
           },
         ],
       };
@@ -45,7 +63,13 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
         ...state,
         tasks: state.tasks.map((task) =>
           task.id === action.payload.id
-            ? { ...task, title: action.payload.title }
+            ? {
+                ...task,
+                ...(action.payload.title !== undefined && { title: action.payload.title }),
+                ...(action.payload.priority !== undefined && { priority: action.payload.priority }),
+                ...(action.payload.dueDate !== undefined && { dueDate: action.payload.dueDate ?? undefined }),
+                ...(action.payload.category !== undefined && { category: action.payload.category }),
+              }
             : task
         ),
       };
@@ -57,9 +81,9 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
 }
 
 const defaultTasks: Task[] = [
-  { id: '1', title: 'Learn React basics', completed: true, createdAt: new Date() },
-  { id: '2', title: 'Build TaskFlow app', completed: false, createdAt: new Date() },
-  { id: '3', title: 'Master TypeScript', completed: false, createdAt: new Date() },
+  { id: '1', title: 'Learn React basics', completed: true, createdAt: new Date(), priority: 'medium' },
+  { id: '2', title: 'Build TaskFlow app', completed: false, createdAt: new Date(), priority: 'high', category: 'Development' },
+  { id: '3', title: 'Master TypeScript', completed: false, createdAt: new Date(), priority: 'low' },
 ];
 
 export function useTasks() {
@@ -69,6 +93,7 @@ export function useTasks() {
   const initialTasks = storedTasks.map((task) => ({
     ...task,
     createdAt: new Date(task.createdAt),
+    dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
   }));
 
   const [state, dispatch] = useReducer(taskReducer, { tasks: initialTasks });
@@ -84,10 +109,27 @@ export function useTasks() {
     document.title = activeCount > 0 ? `TaskFlow (${activeCount})` : 'TaskFlow';
   }, [state.tasks]);
 
-  const addTask = (title: string) => dispatch({ type: 'ADD_TASK', payload: title });
+  const addTask = (
+    titleOrPayload: string | AddTaskPayload
+  ) => {
+    const payload = typeof titleOrPayload === 'string' 
+      ? { title: titleOrPayload } 
+      : titleOrPayload;
+    dispatch({ type: 'ADD_TASK', payload });
+  };
+  
   const toggleTask = (id: string) => dispatch({ type: 'TOGGLE_TASK', payload: id });
   const deleteTask = (id: string) => dispatch({ type: 'DELETE_TASK', payload: id });
-  const updateTask = (id: string, title: string) => dispatch({ type: 'UPDATE_TASK', payload: { id, title } });
+  
+  const updateTask = (
+    idOrPayload: string | UpdateTaskPayload,
+    title?: string
+  ) => {
+    const payload = typeof idOrPayload === 'string'
+      ? { id: idOrPayload, title }
+      : idOrPayload;
+    dispatch({ type: 'UPDATE_TASK', payload });
+  };
 
   return {
     tasks: state.tasks,

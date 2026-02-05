@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MoreHorizontal, Check, Circle, Pencil, Trash2, Copy } from 'lucide-react';
+import { format } from 'date-fns';
+import { MoreHorizontal, Check, Circle, Pencil, Trash2, Copy, CalendarDays } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,14 +23,20 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { TaskDialog } from './TaskDialog';
-import type { Task } from '@/types/task';
+import type { Task, Priority } from '@/types/task';
+
+const priorityConfig: Record<Priority, { label: string; className: string }> = {
+  low: { label: '🟢 Low', className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+  medium: { label: '🟡 Medium', className: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  high: { label: '🔴 High', className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
+};
 
 interface TaskCardProps {
   task: Task;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onUpdate: (id: string, title: string) => void;
-  onDuplicate: (title: string) => void;
+  onUpdate: (payload: { id: string; title?: string; priority?: Priority; dueDate?: Date | null; category?: string }) => void;
+  onDuplicate: (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => void;
 }
 
 export function TaskCard({ task, onToggle, onDelete, onUpdate, onDuplicate }: TaskCardProps) {
@@ -41,12 +48,20 @@ export function TaskCard({ task, onToggle, onDelete, onUpdate, onDuplicate }: Ta
     setShowDeleteDialog(false);
   };
 
-  const handleEdit = (title: string) => {
-    onUpdate(task.id, title);
+  const handleEdit = (data: { title: string; priority: Priority; dueDate?: Date; category?: string }) => {
+    onUpdate({
+      id: task.id,
+      ...data,
+    });
   };
 
   const handleDuplicate = () => {
-    onDuplicate(task.title);
+    onDuplicate({
+      title: task.title,
+      priority: task.priority,
+      dueDate: task.dueDate,
+      category: task.category,
+    });
   };
 
   return (
@@ -69,14 +84,31 @@ export function TaskCard({ task, onToggle, onDelete, onUpdate, onDuplicate }: Ta
           )}
         </Button>
         
-        <Link 
-          to={`/task/${task.id}`} 
-          className={`flex-1 hover:text-primary transition-colors ${
-            task.completed ? 'line-through text-muted-foreground' : ''
-          }`}
-        >
-          {task.title}
-        </Link>
+        <div className="flex-1 min-w-0">
+          <Link 
+            to={`/task/${task.id}`} 
+            className={`block hover:text-primary transition-colors truncate ${
+              task.completed ? 'line-through text-muted-foreground' : ''
+            }`}
+          >
+            {task.title}
+          </Link>
+          {(task.dueDate || task.category) && (
+            <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+              {task.dueDate && (
+                <span className="flex items-center gap-1">
+                  <CalendarDays className="h-3 w-3" />
+                  {format(task.dueDate, 'MMM d')}
+                </span>
+              )}
+              {task.category && <span>• {task.category}</span>}
+            </div>
+          )}
+        </div>
+
+        <Badge className={priorityConfig[task.priority].className}>
+          {task.priority}
+        </Badge>
 
         <Badge variant={task.completed ? 'success' : 'warning'}>
           {task.completed ? 'Done' : 'Active'}

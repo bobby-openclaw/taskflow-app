@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTaskContext } from '@/context';
+import type { Priority } from '@/types/task';
 
 type ViewMode = 'cards' | 'table';
 
@@ -19,9 +20,9 @@ export function Dashboard() {
   const activeCount = tasks.filter((t) => !t.completed).length;
   const completedCount = tasks.filter((t) => t.completed).length;
 
-  const handleAddTask = (title: string) => {
-    addTask(title);
-    toast.success('Task created', { description: `"${title}" has been added.` });
+  const handleAddTask = (data: { title: string; priority: Priority; dueDate?: Date; category?: string }) => {
+    addTask(data);
+    toast.success('Task created', { description: `"${data.title}" has been added.` });
   };
 
   const handleToggleTask = (id: string) => {
@@ -43,14 +44,14 @@ export function Dashboard() {
     }
   };
 
-  const handleUpdateTask = (id: string, title: string) => {
-    updateTask(id, title);
-    toast.success('Task updated', { description: `Task has been renamed to "${title}".` });
+  const handleUpdateTask = (payload: { id: string; title?: string; priority?: Priority; dueDate?: Date | null; category?: string }) => {
+    updateTask(payload);
+    toast.success('Task updated', { description: 'Task has been updated successfully.' });
   };
 
-  const handleDuplicateTask = (title: string) => {
-    addTask(`${title} (copy)`);
-    toast.success('Task duplicated', { description: `A copy of "${title}" has been created.` });
+  const handleDuplicateTask = (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => {
+    addTask({ ...payload, title: `${payload.title} (copy)` });
+    toast.success('Task duplicated', { description: `A copy of "${payload.title}" has been created.` });
   };
 
   const allTasks = tasks;

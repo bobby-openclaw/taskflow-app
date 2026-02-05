@@ -69,3 +69,26 @@ export {
 } from './table';
 export { Skeleton } from './skeleton';
 export { Toaster } from './sonner';
+export { Label } from './label';
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from './select';
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './popover';
+export { Calendar } from './calendar';
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+} from './form';

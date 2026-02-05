@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { ArrowUpDown, Check, Circle, MoreHorizontal, Pencil, Trash2, Copy } from 'lucide-react';
 import {
   Table,
@@ -29,17 +30,24 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { TaskDialog } from './TaskDialog';
-import type { Task } from '@/types/task';
+import type { Task, Priority } from '@/types/task';
 
-type SortField = 'title' | 'completed' | 'createdAt';
+type SortField = 'title' | 'completed' | 'createdAt' | 'priority';
 type SortDirection = 'asc' | 'desc';
+
+const priorityOrder: Record<Priority, number> = { low: 0, medium: 1, high: 2 };
+const priorityConfig: Record<Priority, { className: string }> = {
+  low: { className: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+  medium: { className: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  high: { className: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
+};
 
 interface TaskTableProps {
   tasks: Task[];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onUpdate: (id: string, title: string) => void;
-  onDuplicate: (title: string) => void;
+  onUpdate: (payload: { id: string; title?: string; priority?: Priority; dueDate?: Date | null; category?: string }) => void;
+  onDuplicate: (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => void;
 }
 
 export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: TaskTableProps) {
@@ -61,6 +69,9 @@ export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: 
           break;
         case 'createdAt':
           comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+        case 'priority':
+          comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
           break;
       }
       
@@ -113,6 +124,17 @@ export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: 
               <TableHead>
                 <Button 
                   variant="ghost" 
+                  onClick={() => toggleSort('priority')}
+                  className="h-8 px-2"
+                >
+                  Priority
+                  <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead>Due</TableHead>
+              <TableHead>
+                <Button 
+                  variant="ghost" 
                   onClick={() => toggleSort('createdAt')}
                   className="h-8 px-2"
                 >
@@ -146,12 +168,17 @@ export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: 
                   >
                     {task.title}
                   </Link>
-                  <Badge variant={task.completed ? 'success' : 'warning'} className="ml-2">
-                    {task.completed ? 'Done' : 'Active'}
+                </TableCell>
+                <TableCell>
+                  <Badge className={priorityConfig[task.priority].className}>
+                    {task.priority}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-muted-foreground text-sm">
-                  {task.createdAt.toLocaleDateString()}
+                  {task.dueDate ? format(task.dueDate, 'MMM d') : '—'}
+                </TableCell>
+                <TableCell className="text-muted-foreground text-sm">
+                  {format(task.createdAt, 'MMM d')}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -165,7 +192,12 @@ export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: 
                         <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onDuplicate(task.title)}>
+                      <DropdownMenuItem onClick={() => onDuplicate({ 
+                        title: task.title, 
+                        priority: task.priority,
+                        dueDate: task.dueDate,
+                        category: task.category,
+                      })}>
                         <Copy className="mr-2 h-4 w-4" />
                         Duplicate
                       </DropdownMenuItem>
@@ -207,8 +239,8 @@ export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: 
         open={!!editTask}
         onOpenChange={() => setEditTask(null)}
         task={editTask}
-        onSave={(title) => {
-          if (editTask) onUpdate(editTask.id, title);
+        onSave={(data) => {
+          if (editTask) onUpdate({ id: editTask.id, ...data });
         }}
         mode="edit"
       />

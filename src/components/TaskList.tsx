@@ -1,12 +1,12 @@
-import type { Task } from '@/types/task';
+import type { Task, Priority } from '@/types/task';
 import { TaskCard } from './TaskCard';
 
 interface TaskListProps {
   tasks: Task[];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onUpdate: (id: string, title: string) => void;
-  onDuplicate: (title: string) => void;
+  onUpdate: (payload: { id: string; title?: string; priority?: Priority; dueDate?: Date | null; category?: string }) => void;
+  onDuplicate: (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => void;
 }
 
 export function TaskList({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: TaskListProps) {

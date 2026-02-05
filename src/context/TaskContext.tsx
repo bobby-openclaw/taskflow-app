@@ -1,13 +1,28 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useTasks } from '@/hooks';
-import type { Task } from '@/types/task';
+import type { Task, Priority } from '@/types/task';
+
+interface AddTaskPayload {
+  title: string;
+  priority?: Priority;
+  dueDate?: Date;
+  category?: string;
+}
+
+interface UpdateTaskPayload {
+  id: string;
+  title?: string;
+  priority?: Priority;
+  dueDate?: Date | null;
+  category?: string;
+}
 
 interface TaskContextValue {
   tasks: Task[];
-  addTask: (title: string) => void;
+  addTask: (payload: string | AddTaskPayload) => void;
   toggleTask: (id: string) => void;
   deleteTask: (id: string) => void;
-  updateTask: (id: string, title: string) => void;
+  updateTask: (payload: string | UpdateTaskPayload, title?: string) => void;
 }
 
 const TaskContext = createContext<TaskContextValue | null>(null);
