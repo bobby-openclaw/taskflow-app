@@ -1,31 +1,6 @@
-import { useState } from 'react';
-import { Layout, TaskForm, TaskFilter, TaskList, type FilterType } from './components';
-import { TaskProvider, ThemeProvider, useTaskContext } from './context';
-import { useFilteredTasks } from './hooks';
-import './App.css';
+// App.tsx is no longer used - routing is now handled in main.tsx
+// Keeping this file for reference during migration
 
-function TaskApp() {
-  const { tasks, addTask, toggleTask, deleteTask } = useTaskContext();
-  const [filter, setFilter] = useState<FilterType>('all');
-  const filteredTasks = useFilteredTasks(tasks, filter);
-
-  return (
-    <Layout>
-      <TaskForm onAddTask={addTask} />
-      <TaskFilter filter={filter} onFilterChange={setFilter} />
-      <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />
-    </Layout>
-  );
+export default function App() {
+  return null;
 }
-
-function App() {
-  return (
-    <ThemeProvider>
-      <TaskProvider>
-        <TaskApp />
-      </TaskProvider>
-    </ThemeProvider>
-  );
-}
-
-export default App;
