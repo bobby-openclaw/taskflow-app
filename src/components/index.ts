@@ -4,3 +4,4 @@ export { TaskFilter, type FilterType } from './TaskFilter';
 export { TaskForm } from './TaskForm';
 export { EditTaskForm } from './EditTaskForm';
 export { TaskList } from './TaskList';
+export { TaskDialog } from './TaskDialog';
