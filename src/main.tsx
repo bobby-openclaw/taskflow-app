@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { TaskProvider, ThemeProvider } from './context';
-import { Layout } from './components';
-import { Dashboard, TaskDetail, EditTask, Settings } from './pages';
+import { TaskProvider, ThemeProvider } from '@/context';
+import { Layout } from '@/components';
+import { Dashboard, TaskDetail, EditTask, Settings } from '@/pages';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(

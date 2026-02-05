@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import type { Task } from '../types/task';
+import type { Task } from '@/types/task';
 import { useLocalStorage } from './useLocalStorage';
 
 type TaskAction =

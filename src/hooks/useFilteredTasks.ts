@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import type { Task } from '../types/task';
-import type { FilterType } from '../components/TaskFilter';
+import type { Task } from '@/types/task';
+import type { FilterType } from '@/components/TaskFilter';
 
 export function useFilteredTasks(tasks: Task[], filter: FilterType): Task[] {
   return useMemo(() => {

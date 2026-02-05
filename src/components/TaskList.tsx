@@ -1,4 +1,4 @@
-import type { Task } from '../types/task';
+import type { Task } from '@/types/task';
 import { TaskCard } from './TaskCard';
 
 interface TaskListProps {
@@ -10,7 +10,7 @@ interface TaskListProps {
 export function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500">
+      <div className="text-center py-12 text-muted-foreground">
         <p className="text-lg">No tasks yet</p>
         <p className="text-sm mt-1">Add a task to get started!</p>
       </div>

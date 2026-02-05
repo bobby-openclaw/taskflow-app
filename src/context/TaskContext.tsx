@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
-import { useTasks } from '../hooks';
-import type { Task } from '../types/task';
+import { useTasks } from '@/hooks';
+import type { Task } from '@/types/task';
 
 interface TaskContextValue {
   tasks: Task[];

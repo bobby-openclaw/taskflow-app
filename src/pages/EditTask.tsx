@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Navigate, Link } from 'react-router-dom';
-import { useTaskContext } from '../context';
-import { EditTaskForm } from '../components/EditTaskForm';
+import { ArrowLeft } from 'lucide-react';
+import { useTaskContext } from '@/context';
+import { EditTaskForm } from '@/components/EditTaskForm';
 
 export function EditTask() {
   const { id } = useParams<{ id: string }>();
@@ -23,12 +24,13 @@ export function EditTask() {
   };
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl animate-fade-in">
       <Link 
         to={`/task/${task.id}`}
-        className="inline-flex items-center gap-1 text-gray-400 hover:text-indigo-400 mb-6 transition-colors"
+        className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary mb-6 transition-colors"
       >
-        ← Back to Task
+        <ArrowLeft className="h-4 w-4" />
+        Back to Task
       </Link>
       <h2 className="text-2xl font-bold mb-6">Edit Task</h2>
       <EditTaskForm task={task} onSave={handleSave} onCancel={handleCancel} />

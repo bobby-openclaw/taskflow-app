@@ -1,5 +1,9 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { useTaskContext } from '../context';
+import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useTaskContext } from '@/context';
 
 export function TaskDetail() {
   const { id } = useParams<{ id: string }>();
@@ -15,59 +19,57 @@ export function TaskDetail() {
     <div className="max-w-2xl animate-fade-in">
       <Link 
         to="/" 
-        className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition-colors duration-200"
+        className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary mb-6 transition-colors"
       >
-        ← Back to Tasks
+        <ArrowLeft className="h-4 w-4" />
+        Back to Tasks
       </Link>
       
-      <div className="card p-6">
-        <h2 className="text-2xl font-bold mb-4">{task.title}</h2>
-        
-        <div className="space-y-2 mb-6">
-          <p className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-gray-400">Status:</span>
-            <span className={`px-2 py-0.5 rounded text-sm transition-colors duration-200 ${
-              task.completed 
-                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
-                : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-            }`}>
+      <Card>
+        <CardHeader>
+          <div className="flex items-start justify-between">
+            <CardTitle className="text-2xl">{task.title}</CardTitle>
+            <Badge variant={task.completed ? 'success' : 'warning'}>
               {task.completed ? 'Completed' : 'Active'}
-            </span>
+            </Badge>
+          </div>
+        </CardHeader>
+        
+        <CardContent>
+          <p className="text-muted-foreground">
+            <span className="font-medium text-foreground">Created:</span>{' '}
+            {task.createdAt.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </p>
-          <p className="text-gray-500 dark:text-gray-400">
-            <span>Created:</span>{' '}
-            <span className="text-gray-700 dark:text-gray-200">
-              {task.createdAt.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </span>
-          </p>
-        </div>
+        </CardContent>
 
-        <div className="flex flex-wrap gap-3">
-          <button 
-            className="btn btn-primary"
-            onClick={() => toggleTask(task.id)}
-          >
+        <CardFooter className="flex flex-wrap gap-3">
+          <Button onClick={() => toggleTask(task.id)}>
             Mark as {task.completed ? 'Active' : 'Completed'}
-          </button>
-          <Link to={`/task/${task.id}/edit`}>
-            <button className="btn btn-secondary">Edit Task</button>
-          </Link>
-          <Link to="/">
-            <button 
-              className="btn btn-danger"
-              onClick={() => deleteTask(task.id)}
-            >
-              Delete Task
-            </button>
-          </Link>
-        </div>
-      </div>
+          </Button>
+          <Button variant="secondary" asChild>
+            <Link to={`/task/${task.id}/edit`}>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </Link>
+          </Button>
+          <Button 
+            variant="destructive"
+            onClick={() => deleteTask(task.id)}
+            asChild
+          >
+            <Link to="/">
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

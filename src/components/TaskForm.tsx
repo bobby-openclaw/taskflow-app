@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { taskSchema, type TaskFormData } from '../schemas';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { taskSchema, type TaskFormData } from '@/schemas';
 
 interface TaskFormProps {
   onAddTask: (title: string) => void;
@@ -27,20 +30,21 @@ export function TaskForm({ onAddTask }: TaskFormProps) {
   return (
     <form className="flex gap-3 mb-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex-1">
-        <input
+        <Input
           type="text"
           {...register('title')}
           placeholder="Add a new task..."
-          className={`input ${errors.title ? 'input-error' : ''}`}
           aria-invalid={errors.title ? 'true' : 'false'}
+          className={errors.title ? 'border-destructive focus-visible:ring-destructive' : ''}
         />
         {errors.title && (
-          <p className="mt-1 text-sm text-red-400">{errors.title.message}</p>
+          <p className="mt-1 text-sm text-destructive">{errors.title.message}</p>
         )}
       </div>
-      <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+      <Button type="submit" disabled={isSubmitting}>
+        <Plus className="h-4 w-4 mr-1" />
         Add
-      </button>
+      </Button>
     </form>
   );
 }

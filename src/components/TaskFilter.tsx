@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+
 export type FilterType = 'all' | 'active' | 'completed';
 
 interface TaskFilterProps {
@@ -11,17 +13,15 @@ export function TaskFilter({ filter, onFilterChange }: TaskFilterProps) {
   return (
     <div className="flex gap-2 mb-4">
       {filters.map((f) => (
-        <button
+        <Button
           key={f}
+          variant={filter === f ? 'default' : 'secondary'}
+          size="sm"
           onClick={() => onFilterChange(f)}
-          className={`px-3 py-1.5 text-sm rounded-lg capitalize transition-colors ${
-            filter === f
-              ? 'bg-indigo-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-          }`}
+          className="capitalize"
         >
           {f}
-        </button>
+        </Button>
       ))}
     </div>
   );
