@@ -7,6 +7,7 @@ interface TaskContextValue {
   addTask: (title: string) => void;
   toggleTask: (id: string) => void;
   deleteTask: (id: string) => void;
+  updateTask: (id: string, title: string) => void;
 }
 
 const TaskContext = createContext<TaskContextValue | null>(null);

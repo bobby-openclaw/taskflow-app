@@ -294,6 +294,72 @@ button:focus-visible {
   background-color: #333;
 }
 
+/* Edit Task */
+.edit-task {
+  max-width: 600px;
+}
+
+.edit-task-form {
+  padding: 2rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.form-field label {
+  font-weight: 500;
+}
+
+.form-field input {
+  padding: 0.75rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #242424;
+  color: inherit;
+  font-size: 1rem;
+}
+
+.form-field input[aria-invalid="true"] {
+  border-color: #ff6b6b;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.cancel-btn {
+  background-color: #333;
+}
+
+.save-btn {
+  background-color: #646cff;
+  color: white;
+}
+
+.save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.edit-task-btn {
+  background-color: #333;
+}
+
 /* Light Theme */
 @media (prefers-color-scheme: light) {
   :root {

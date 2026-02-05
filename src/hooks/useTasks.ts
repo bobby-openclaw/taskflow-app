@@ -6,6 +6,7 @@ type TaskAction =
   | { type: 'ADD_TASK'; payload: string }
   | { type: 'TOGGLE_TASK'; payload: string }
   | { type: 'DELETE_TASK'; payload: string }
+  | { type: 'UPDATE_TASK'; payload: { id: string; title: string } }
   | { type: 'SET_TASKS'; payload: Task[] };
 
 interface TaskState {
@@ -38,6 +39,15 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
       return {
         ...state,
         tasks: state.tasks.filter((task) => task.id !== action.payload),
+      };
+    case 'UPDATE_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id
+            ? { ...task, title: action.payload.title }
+            : task
+        ),
       };
     case 'SET_TASKS':
       return { ...state, tasks: action.payload };
@@ -77,11 +87,13 @@ export function useTasks() {
   const addTask = (title: string) => dispatch({ type: 'ADD_TASK', payload: title });
   const toggleTask = (id: string) => dispatch({ type: 'TOGGLE_TASK', payload: id });
   const deleteTask = (id: string) => dispatch({ type: 'DELETE_TASK', payload: id });
+  const updateTask = (id: string, title: string) => dispatch({ type: 'UPDATE_TASK', payload: { id, title } });
 
   return {
     tasks: state.tasks,
     addTask,
     toggleTask,
     deleteTask,
+    updateTask,
   };
 }

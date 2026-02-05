@@ -44,6 +44,9 @@ export function TaskDetail() {
           >
             Mark as {task.completed ? 'Active' : 'Completed'}
           </button>
+          <Link to={`/task/${task.id}/edit`}>
+            <button className="edit-task-btn">Edit Task</button>
+          </Link>
           <Link to="/">
             <button 
               className="delete-task-btn"
