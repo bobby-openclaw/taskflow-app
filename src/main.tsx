@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { TaskProvider, ThemeProvider } from '@/context';
 import { Layout } from '@/components';
 import { Dashboard, TaskDetail, EditTask, Settings } from '@/pages';
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
+          <Toaster richColors position="bottom-right" />
         </TaskProvider>
       </ThemeProvider>
     </BrowserRouter>

@@ -56,3 +56,16 @@ export {
   SheetTitle,
   SheetDescription,
 } from './sheet';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from './table';
+export { Skeleton } from './skeleton';
+export { Toaster } from './sonner';
