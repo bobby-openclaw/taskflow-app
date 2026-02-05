@@ -1,17 +1,13 @@
 import { useState } from 'react';
 import { Layout, TaskForm, TaskFilter, TaskList, type FilterType } from './components';
 import { TaskProvider, ThemeProvider, useTaskContext } from './context';
+import { useFilteredTasks } from './hooks';
 import './App.css';
 
 function TaskApp() {
   const { tasks, addTask, toggleTask, deleteTask } = useTaskContext();
   const [filter, setFilter] = useState<FilterType>('all');
-
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
-    return true;
-  });
+  const filteredTasks = useFilteredTasks(tasks, filter);
 
   return (
     <Layout>
