@@ -12,10 +12,10 @@ export function TaskDetail() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl animate-fade-in">
       <Link 
         to="/" 
-        className="inline-flex items-center gap-1 text-gray-400 hover:text-indigo-400 mb-6 transition-colors"
+        className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition-colors duration-200"
       >
         ← Back to Tasks
       </Link>
@@ -25,18 +25,18 @@ export function TaskDetail() {
         
         <div className="space-y-2 mb-6">
           <p className="flex items-center gap-2">
-            <span className="text-gray-400">Status:</span>
-            <span className={`px-2 py-0.5 rounded text-sm ${
+            <span className="text-gray-500 dark:text-gray-400">Status:</span>
+            <span className={`px-2 py-0.5 rounded text-sm transition-colors duration-200 ${
               task.completed 
-                ? 'bg-green-900/30 text-green-400' 
-                : 'bg-amber-900/30 text-amber-400'
+                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
             }`}>
               {task.completed ? 'Completed' : 'Active'}
             </span>
           </p>
-          <p className="text-gray-400">
+          <p className="text-gray-500 dark:text-gray-400">
             <span>Created:</span>{' '}
-            <span className="text-gray-200">
+            <span className="text-gray-700 dark:text-gray-200">
               {task.createdAt.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',

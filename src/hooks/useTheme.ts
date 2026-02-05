@@ -1,23 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
 export type Theme = 'light' | 'dark';
 
-function getSystemTheme(): Theme {
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-  return 'light';
-}
-
 export function useTheme() {
-  const [theme, setTheme] = useLocalStorage<Theme>('taskflow-theme', getSystemTheme());
+  const [theme, setTheme] = useLocalStorage<Theme>('taskflow-theme', 'dark');
 
+  // Apply theme class to document
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
   }, [theme]);
 
-  const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  }, [setTheme]);
 
   return { theme, toggleTheme };
 }
