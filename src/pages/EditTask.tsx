@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useTaskContext } from '@/context';
 import { EditTaskForm } from '@/components/EditTaskForm';
 
-export function EditTask() {
+export const EditTask = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { tasks, updateTask } = useTaskContext();

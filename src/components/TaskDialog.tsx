@@ -55,7 +55,7 @@ interface TaskDialogProps {
   mode: 'add' | 'edit';
 }
 
-export function TaskDialog({ open, onOpenChange, task, onSave, mode }: TaskDialogProps) {
+export const TaskDialog = ({ open, onOpenChange, task, onSave, mode }: TaskDialogProps) => {
   const form = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
     defaultValues: {

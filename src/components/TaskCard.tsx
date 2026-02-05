@@ -39,7 +39,7 @@ interface TaskCardProps {
   onDuplicate: (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => void;
 }
 
-export function TaskCard({ task, onToggle, onDelete, onUpdate, onDuplicate }: TaskCardProps) {
+export const TaskCard = ({ task, onToggle, onDelete, onUpdate, onDuplicate }: TaskCardProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 

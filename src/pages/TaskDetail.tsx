@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTaskContext } from '@/context';
 
-export function TaskDetail() {
+export const TaskDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { tasks, toggleTask, deleteTask } = useTaskContext();
   

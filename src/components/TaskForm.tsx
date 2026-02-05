@@ -9,7 +9,7 @@ interface TaskFormProps {
   onAddTask: (title: string) => void;
 }
 
-export function TaskForm({ onAddTask }: TaskFormProps) {
+export const TaskForm = ({ onAddTask }: TaskFormProps) => {
   const {
     register,
     handleSubmit,

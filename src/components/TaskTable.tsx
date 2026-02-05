@@ -50,7 +50,7 @@ interface TaskTableProps {
   onDuplicate: (payload: { title: string; priority?: Priority; dueDate?: Date; category?: string }) => void;
 }
 
-export function TaskTable({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: TaskTableProps) {
+export const TaskTable = ({ tasks, onToggle, onDelete, onUpdate, onDuplicate }: TaskTableProps) => {
   const [sortField, setSortField] = useState<SortField>('createdAt');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [deleteTask, setDeleteTask] = useState<Task | null>(null);

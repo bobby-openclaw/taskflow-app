@@ -12,7 +12,7 @@ interface EditTaskFormProps {
   onCancel: () => void;
 }
 
-export function EditTaskForm({ task, onSave, onCancel }: EditTaskFormProps) {
+export const EditTaskForm = ({ task, onSave, onCancel }: EditTaskFormProps) => {
   const {
     register,
     handleSubmit,

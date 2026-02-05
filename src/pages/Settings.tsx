@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/button';
 import { useThemeContext } from '@/context';
 
-export function Settings() {
+export const Settings = () => {
   const { theme, toggleTheme } = useThemeContext();
 
   return (

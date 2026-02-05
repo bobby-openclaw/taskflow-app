@@ -31,7 +31,7 @@ interface TaskProviderProps {
   children: ReactNode;
 }
 
-export function TaskProvider({ children }: TaskProviderProps) {
+export const TaskProvider = ({ children }: TaskProviderProps) => {
   const taskState = useTasks();
 
   return (

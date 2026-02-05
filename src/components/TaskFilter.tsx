@@ -7,7 +7,7 @@ interface TaskFilterProps {
   onFilterChange: (filter: FilterType) => void;
 }
 
-export function TaskFilter({ filter, onFilterChange }: TaskFilterProps) {
+export const TaskFilter = ({ filter, onFilterChange }: TaskFilterProps) => {
   const filters: FilterType[] = ['all', 'active', 'completed'];
 
   return (

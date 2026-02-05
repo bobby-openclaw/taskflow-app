@@ -12,7 +12,7 @@ import type { Priority } from '@/types/task';
 
 type ViewMode = 'cards' | 'table';
 
-export function Dashboard() {
+export const Dashboard = () => {
   const { tasks, addTask, toggleTask, deleteTask, updateTask } = useTaskContext();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('cards');

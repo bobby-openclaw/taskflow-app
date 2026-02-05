@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 
-export function TaskCardSkeleton() {
+export const TaskCardSkeleton = () => {
   return (
     <Card className="flex items-center gap-3 p-4">
       <Skeleton className="h-9 w-9 rounded-full" />
@@ -14,7 +14,7 @@ export function TaskCardSkeleton() {
   );
 }
 
-export function TaskListSkeleton({ count = 3 }: { count?: number }) {
+export const TaskListSkeleton = ({ count = 3 }: { count?: number }) => {
   return (
     <div className="flex flex-col gap-3">
       {Array.from({ length: count }).map((_, i) => (
@@ -24,7 +24,7 @@ export function TaskListSkeleton({ count = 3 }: { count?: number }) {
   );
 }
 
-export function TaskTableSkeleton({ rows = 5 }: { rows?: number }) {
+export const TaskTableSkeleton = ({ rows = 5 }: { rows?: number }) => {
   return (
     <div className="rounded-md border">
       <div className="p-4">
