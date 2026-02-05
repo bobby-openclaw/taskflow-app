@@ -1,17 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout, TaskForm, TaskFilter, TaskList, type FilterType } from './components';
 import type { Task } from './types/task';
 import './App.css';
 
-const initialTasks: Task[] = [
-  { id: '1', title: 'Learn React basics', completed: true, createdAt: new Date() },
-  { id: '2', title: 'Build TaskFlow app', completed: false, createdAt: new Date() },
-  { id: '3', title: 'Master TypeScript', completed: false, createdAt: new Date() },
-];
+const STORAGE_KEY = 'taskflow-tasks';
+
+function loadTasks(): Task[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return parsed.map((task: Task) => ({
+        ...task,
+        createdAt: new Date(task.createdAt),
+      }));
+    }
+  } catch (e) {
+    console.error('Failed to load tasks from localStorage:', e);
+  }
+  return [
+    { id: '1', title: 'Learn React basics', completed: true, createdAt: new Date() },
+    { id: '2', title: 'Build TaskFlow app', completed: false, createdAt: new Date() },
+    { id: '3', title: 'Master TypeScript', completed: false, createdAt: new Date() },
+  ];
+}
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [filter, setFilter] = useState<FilterType>('all');
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Update document title with task count
+  useEffect(() => {
+    const activeCount = tasks.filter((t) => !t.completed).length;
+    document.title = activeCount > 0 ? `TaskFlow (${activeCount})` : 'TaskFlow';
+  }, [tasks]);
 
   const addTask = (title: string) => {
     const newTask: Task = {
