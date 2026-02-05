@@ -8,9 +8,17 @@ export function Dashboard() {
   const [filter, setFilter] = useState<FilterType>('all');
   const filteredTasks = useFilteredTasks(tasks, filter);
 
+  const activeCount = tasks.filter((t) => !t.completed).length;
+  const completedCount = tasks.filter((t) => t.completed).length;
+
   return (
-    <div className="dashboard">
-      <h2>My Tasks</h2>
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold">My Tasks</h2>
+        <div className="text-sm text-gray-400">
+          {activeCount} active · {completedCount} completed
+        </div>
+      </div>
       <TaskForm onAddTask={addTask} />
       <TaskFilter filter={filter} onFilterChange={setFilter} />
       <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />

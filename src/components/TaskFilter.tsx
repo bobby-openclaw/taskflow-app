@@ -9,14 +9,18 @@ export function TaskFilter({ filter, onFilterChange }: TaskFilterProps) {
   const filters: FilterType[] = ['all', 'active', 'completed'];
 
   return (
-    <div className="task-filter">
+    <div className="flex gap-2 mb-4">
       {filters.map((f) => (
         <button
           key={f}
-          className={filter === f ? 'active' : ''}
           onClick={() => onFilterChange(f)}
+          className={`px-3 py-1.5 text-sm rounded-lg capitalize transition-colors ${
+            filter === f
+              ? 'bg-indigo-600 text-white'
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+          }`}
         >
-          {f.charAt(0).toUpperCase() + f.slice(1)}
+          {f}
         </button>
       ))}
     </div>

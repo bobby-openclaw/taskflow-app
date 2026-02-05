@@ -27,25 +27,28 @@ export function EditTaskForm({ task, onSave, onCancel }: EditTaskFormProps) {
   };
 
   return (
-    <form className="edit-task-form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="form-field">
-        <label htmlFor="title">Task Title</label>
+    <form className="card p-6" onSubmit={handleSubmit(onSubmit)}>
+      <div className="mb-4">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-2">
+          Task Title
+        </label>
         <input
           id="title"
           type="text"
           {...register('title')}
+          className={`input ${errors.title ? 'input-error' : ''}`}
           aria-invalid={errors.title ? 'true' : 'false'}
         />
         {errors.title && (
-          <span className="error-message">{errors.title.message}</span>
+          <p className="mt-1 text-sm text-red-400">{errors.title.message}</p>
         )}
       </div>
 
-      <div className="form-actions">
-        <button type="button" onClick={onCancel} className="cancel-btn">
+      <div className="flex gap-3 justify-end">
+        <button type="button" onClick={onCancel} className="btn btn-secondary">
           Cancel
         </button>
-        <button type="submit" disabled={isSubmitting || !isDirty} className="save-btn">
+        <button type="submit" disabled={isSubmitting || !isDirty} className="btn btn-primary">
           Save Changes
         </button>
       </div>

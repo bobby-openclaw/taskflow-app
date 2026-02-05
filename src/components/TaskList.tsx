@@ -9,11 +9,16 @@ interface TaskListProps {
 
 export function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
   if (tasks.length === 0) {
-    return <p className="empty-message">No tasks to display</p>;
+    return (
+      <div className="text-center py-12 text-gray-500">
+        <p className="text-lg">No tasks yet</p>
+        <p className="text-sm mt-1">Add a task to get started!</p>
+      </div>
+    );
   }
 
   return (
-    <div className="task-list">
+    <div className="flex flex-col gap-3">
       {tasks.map((task) => (
         <TaskCard
           key={task.id}
