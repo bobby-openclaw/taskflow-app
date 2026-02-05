@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { TaskCard } from './components/TaskCard';
-import { TaskForm } from './components/TaskForm';
-import { TaskFilter, type FilterType } from './components/TaskFilter';
+import { Layout, TaskForm, TaskFilter, TaskList, type FilterType } from './components';
 import type { Task } from './types/task';
 import './App.css';
 
@@ -44,21 +42,11 @@ function App() {
   });
 
   return (
-    <div className="app">
-      <h1>TaskFlow</h1>
+    <Layout>
       <TaskForm onAddTask={addTask} />
       <TaskFilter filter={filter} onFilterChange={setFilter} />
-      <div className="task-list">
-        {filteredTasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onToggle={toggleTask}
-            onDelete={deleteTask}
-          />
-        ))}
-      </div>
-    </div>
+      <TaskList tasks={filteredTasks} onToggle={toggleTask} onDelete={deleteTask} />
+    </Layout>
   );
 }
 
